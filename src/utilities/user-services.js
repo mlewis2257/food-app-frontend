@@ -28,35 +28,29 @@ export const logout = () => {
     localStorage.removeItem('refreshToken');
 };
 
-// axios Interceptor to handle automatic token refresh
+// axios Interceptor to handle automatic token refresh and error responses
 api.interceptors.response.use(
     response => response,
     async error => {
         const originalRequest = error.config;
 
-        // Handling Authentication Error (Token Expiration)
+        // Token Expiration (401 Unauthorized)
         if (error.response.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true;
-
             try {
                 const newAccessToken = await refreshToken();
                 axios.defaults.headers.common['Authorization'] = 'Bearer ' + newAccessToken;
                 return api(originalRequest);
             } catch (refreshError) {
-                // If refresh fails, it could be a sign to log out, or you might just reject the promise
+                // Handle token refresh failure
                 return Promise.reject(refreshError);
             }
         }
 
-        // Handling Authorization Error
-        if (error.response.status === 403) {
-            // Handle forbidden access here (e.g., show a message to the user)
-            // Do not log out the user
-            return Promise.reject(error);
-        }
-
+        // Other errors are handled at the component level
         return Promise.reject(error);
     }
 );
+
 
 export default api;
