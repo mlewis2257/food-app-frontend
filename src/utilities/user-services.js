@@ -34,20 +34,25 @@ api.interceptors.response.use(
     async error => {
         const originalRequest = error.config;
 
-        // Token Expiration (401 Unauthorized)
+        // Check for token expiration (401 error)
         if (error.response.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true;
+
             try {
+                // Attempt to refresh the token
                 const newAccessToken = await refreshToken();
                 axios.defaults.headers.common['Authorization'] = 'Bearer ' + newAccessToken;
+                
+                // Update the original request header and retry
+                originalRequest.headers['Authorization'] = 'Bearer ' + newAccessToken;
                 return api(originalRequest);
             } catch (refreshError) {
-                // Handle token refresh failure
+                // Redirect to login or take appropriate action if token refresh fails
+                window.location = '/login';
                 return Promise.reject(refreshError);
             }
         }
-
-        // Other errors are handled at the component level
+        // Handle other types of errors
         return Promise.reject(error);
     }
 );

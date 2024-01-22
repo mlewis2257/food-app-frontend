@@ -1,23 +1,39 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { login } from '../../utilities/user-services';
+import { UserContext } from '../../hooks/userContext';
+import useApi from '../../hooks/useApi';
+import api from '../../utilities/user-services';
 
 export default function LoginForm() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(''); // Added to handle display of login errors
+    const { request } = useApi();
+    const { setUser } = useContext(UserContext);
+    const navigate = useNavigate();
 
-    const navigate = useNavigate()
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:8000/api/token/', { username, password });
-            localStorage.setItem('access', response.data.access);
-            localStorage.setItem('refresh', response.data.refresh);
-            navigate('/')
+            await login(username, password);
+            // Fetch user information after successful login
+            const userInfo = await fetchUserInfo(); // Implement this function
+            setUser(userInfo); // Update UserContext
+            navigate('/');
         } catch (error) {
             setError('Failed to login. Please check your credentials.');
             console.error('Login error', error);
+        }
+    };
+
+    const fetchUserInfo = async () => {
+        try {
+            const userInfo = await request(api.get, '/userinfo/');
+            return userInfo;
+        } catch (error) {
+            console.error('Error fetching user info:', error);
+            return null;
         }
     };
 
