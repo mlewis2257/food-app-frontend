@@ -14,6 +14,13 @@ export const login = async (username, password) => {
     return response.data;
 };
 
+
+// user signup
+export const signup = async ({ username, email, password }) => {
+    const response = await api.post('/signup/', { username, email, password });
+    return response.data; // Assuming the backend responds with user info or a success message
+};
+
 // refresh token
 export const refreshToken = async () => {
     const refreshToken = localStorage.getItem('refreshToken');
@@ -26,7 +33,21 @@ export const refreshToken = async () => {
 export const logout = () => {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
+    localStorage.removeItem('userInfo');
 };
+
+
+//axios interceptor to automatically insert the access tokens into every response. 
+api.interceptors.request.use(request => {
+    const accessToken = localStorage.getItem('accessToken');
+    if (accessToken) {
+        request.headers['Authorization'] = `Bearer ${accessToken}`;
+    }
+    return request;
+}, error => {
+    // Handle request errors here
+    return Promise.reject(error);
+});
 
 // axios Interceptor to handle automatic token refresh and error responses
 api.interceptors.response.use(

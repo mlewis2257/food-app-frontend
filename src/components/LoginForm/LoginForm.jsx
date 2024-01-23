@@ -2,38 +2,40 @@ import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../../utilities/user-services';
 import { UserContext } from '../../hooks/userContext';
-import useApi from '../../hooks/useApi';
 import api from '../../utilities/user-services';
+import axios from 'axios';
 
 export default function LoginForm() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(''); // Added to handle display of login errors
-    const { request } = useApi();
     const { setUser } = useContext(UserContext);
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await login(username, password);
-            // Fetch user information after successful login
-            const userInfo = await fetchUserInfo(); // Implement this function
-            setUser(userInfo); // Update UserContext
-            navigate('/');
+            const loginResponse = await login(username, password);
+            if (loginResponse) {
+                // Assuming login function already updates localStorage for tokens
+                fetchUserInfo(); // Fetch user information after successful login
+            }
         } catch (error) {
             setError('Failed to login. Please check your credentials.');
             console.error('Login error', error);
         }
     };
-
+    
     const fetchUserInfo = async () => {
         try {
-            const userInfo = await request(api.get, '/userinfo/');
-            return userInfo;
+            const response = await api.get('/userinfo/');
+            if (response && response.data) {
+                setUser(response.data); // Update UserContext with fetched user info
+                navigate('/'); // Navigate to the homepage or dashboard after login
+            }
         } catch (error) {
             console.error('Error fetching user info:', error);
-            return null;
+            setError('Could not fetch user information.');
         }
     };
 

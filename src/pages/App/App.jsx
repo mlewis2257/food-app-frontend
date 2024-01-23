@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import NavbarReact from "../../components/Navbar/Navbar";
+import Navbar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
@@ -18,7 +18,7 @@ function App() {
   return (
     <UserProvider>
       <main className="App">
-        <NavbarReact />
+        <Navbar />
         <ScrollToTop /> 
         <Routes>
           <Route path="/" element={<Homepage />} />

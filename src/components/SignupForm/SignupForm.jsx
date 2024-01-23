@@ -1,79 +1,115 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { signup, login } from '../../utilities/user-services'; // Ensure these functions handle API calls appropriately
+import { UserContext } from '../../hooks/userContext';
+import api from '../../utilities/user-services'; // Assuming this exports configured Axios instance
 
 export default function SignupForm() {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [email, setEmail] = useState('');
+    const [formData, setFormData] = useState({
+        username: '',
+        email: '',
+        password: '',
+    });
+    const [passwordConfirm, setPasswordConfirm] = useState(''); // Added for password confirmation
     const [error, setError] = useState('');
     const navigate = useNavigate();
+    const { setUser } = useContext(UserContext);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prevState => ({
+            ...prevState,
+            [name]: value,
+        }));
+    };
+
+    // Handle password confirmation change
+    const handlePasswordConfirmChange = (e) => {
+        setPasswordConfirm(e.target.value);
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const { username, email, password } = formData;
+
+        // Check if passwords match before submitting
+        if (password !== passwordConfirm) {
+            setError('Passwords do not match.');
+            return; // Prevent form submission
+        }
+
         try {
-            // First, sign up the user
-            await axios.post('http://localhost:8000/api/users/', { username, email, password });
-
-            // Then, automatically log them in (get JWT token)
-            const loginResponse = await axios.post('http://localhost:8000/api/token/', { username, password });
-            localStorage.setItem('access', loginResponse.data.access);
-            localStorage.setItem('refresh', loginResponse.data.refresh);
-
-            // Redirect to the homepage 
-            navigate('/');  
+            console.log({ username, email, password }); // Confirm payload structure
+            await signup({ username, email, password });
+            // Assuming login updates localStorage for tokens
+            const userInfo = await login(username, password); 
+            setUser(userInfo); // Update UserContext
+            navigate('/'); // Navigate to the homepage or dashboard after login
         } catch (error) {
-            setError('Failed to sign up or log in. Please try again.');
-            console.error('Signup/Login error', error);
+            setError('Failed to sign up. Please try again.');
+            console.error('Signup error', error);
         }
     };
 
     return (
         <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
             <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
-                    Username
-                </label>
+                <label htmlFor="username" className="block text-gray-700 text-sm font-bold mb-2">Username</label>
                 <input
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="username"
                     type="text"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    name="username"
+                    id="username"
+                    value={formData.username}
+                    onChange={handleChange}
+                    className="mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                     placeholder="Username"
+                    required
                 />
             </div>
             <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
-                    Email
-                </label>
+                <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2">Email</label>
                 <input
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="email"
                     type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    name="email"
+                    id="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    className="mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                     placeholder="Email"
+                    required
                 />
             </div>
-            <div className="mb-6">
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
-                    Password
-                </label>
+            <div className="mb-4">
+                <label htmlFor="password" className="block text-gray-700 text-sm font-bold mb-2">Password</label>
                 <input
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-                    id="password"
                     type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="******************"
+                    name="password"
+                    id="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    className="mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                    placeholder="Password"
+                    required
+                />
+            </div>
+            <div className="mb-4">
+                <label htmlFor="passwordConfirm" className="block text-gray-700 text-sm font-bold mb-2">Confirm Password</label>
+                <input
+                    type="password"
+                    name="passwordConfirm"
+                    id="passwordConfirm"
+                    value={passwordConfirm}
+                    onChange={handlePasswordConfirmChange}
+                    className="mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                    placeholder="Confirm Password"
+                    required
                 />
             </div>
             {error && <p className="text-red-500 text-xs italic">{error}</p>}
             <div className="flex items-center justify-between">
                 <button
-                    className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                     type="submit"
+                    className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
                     Sign Up
                 </button>
