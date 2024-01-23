@@ -1,9 +1,5 @@
-import React, { useEffect } from 'react';
-
+import React, { useEffect } from "react";
 
 export default function Homepage() {
-    
-return (
-    <div>HOMEPAGE</div>
-)
+  return <div>HOMEPAGE</div>;
 }
