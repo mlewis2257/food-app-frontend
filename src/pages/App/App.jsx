@@ -29,7 +29,7 @@ function App() {
           <Route path="/error" element={<GenericErrorPage message="An unexpected error occurred."/>} />
           <Route path="/*" element={<NotFoundPage />} />
         </Routes>
-        {/* <Footer /> */}
+        <Footer />
       </main>
     </UserProvider>
   );
