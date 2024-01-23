@@ -40,14 +40,28 @@ export default function SignupForm() {
 
         try {
             console.log({ username, email, password }); // Confirm payload structure
-            await signup({ username, email, password });
+            const signupResponse = await signup({ username, email, password });
             // Assuming login updates localStorage for tokens
-            const userInfo = await login(username, password); 
-            setUser(userInfo); // Update UserContext
-            navigate('/'); // Navigate to the homepage or dashboard after login
+            // const userInfo = await login(username, password); 
+            if (signupResponse) {
+                fetchUserInfo()
+            }
         } catch (error) {
             setError('Failed to sign up. Please try again.');
             console.error('Signup error', error);
+        }
+    };
+
+    const fetchUserInfo = async () => {
+        try {
+            const response = await api.get('/userinfo/');
+            if (response && response.data) {
+                setUser(response.data); // Update UserContext with fetched user info
+                navigate('/'); // Navigate to the homepage or dashboard after login
+            }
+        } catch (error) {
+            console.error('Error fetching user info:', error);
+            setError('Could not fetch user information.');
         }
     };
 

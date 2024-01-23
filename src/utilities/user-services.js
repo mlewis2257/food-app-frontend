@@ -18,6 +18,9 @@ export const login = async (username, password) => {
 // user signup
 export const signup = async ({ username, email, password }) => {
     const response = await api.post('/signup/', { username, email, password });
+    console.log(response)
+    localStorage.setItem('accessToken', response.data.access);
+    localStorage.setItem('refreshToken', response.data.refresh);
     return response.data; // Assuming the backend responds with user info or a success message
 };
 
