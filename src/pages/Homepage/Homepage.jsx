@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
-
+import React, { useEffect } from "react";
 
 export default function Homepage() {
+
     
 return (
     <div className="bg-gray-100 min-h-screen flex items-center justify-center">
@@ -42,3 +42,4 @@ return (
     </div>
 );
 };
+
