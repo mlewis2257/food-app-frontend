@@ -4,7 +4,7 @@ import Navbar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import Homepage from "../HomePage/Homepage";
+import Homepage from "../Homepage/Homepage";
 import GroupsTest from "../GroupsTest/GroupsTest";
 import AuthPage from "../AuthPage/AuthPage";
 import ScrollToTop from "./ScrollToTop";
