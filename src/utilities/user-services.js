@@ -21,7 +21,7 @@ export const signup = async ({ username, email, password }) => {
     console.log(response)
     localStorage.setItem('accessToken', response.data.access);
     localStorage.setItem('refreshToken', response.data.refresh);
-    return response.data; // Assuming the backend responds with user info or a success message
+    return response.data; // Assuming the backend responds with user info 
 };
 
 // refresh token
