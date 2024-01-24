@@ -1,35 +1,25 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
-    <footer className="absolute md:relative top-full right-0 md:flex flex-col md:flex-row w-full md:w-auto bg-gray-800 md:bg-transparent" >
-      {/* <div className="md: flex md:justify-between md:items-center sm:px-12 px-4 bg-[#ffffff] py-7">
-        <h1 className="lg:text-4xl text-3x1 md:mb-0 mb-6 lg:leading-normal font-semi-bold md:w-2/5></h1>
-      </div>
-      <div>
-        <span className="text-sm text-gray-500 sm:text-center">
-          © 2024 
-          <a href="https://flowbite.com/" class="hover:underline">FoodSquad™</a>
-          . All Rights Reserved.
-        </span>
-      </div> */}
+    <footer class="fixed bottom-0 left-0 z-20 w-full p-4 bg-gray-800 border-t border-gray-200 shadow md:flex md:items-center md:justify-between md:p-6 dark:bg-gray-800 dark:border-gray-600">
+    <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2024 <a href="https://lunchbreak.com" class="hover:underline">LunchBreak™</a>. All Rights Reserved.
+    </span>
     <ul class="flex flex-wrap items-center mt-3 text-sm font-medium text-gray-500 dark:text-gray-400 sm:mt-0">
         <li>
-            <a href="#" class="hover:underline me-4 md:me-6">About</a>
+            <Link to="/" class="hover:underline me-4 md:me-6">About</Link>
         </li>
         <li>
-            <a href="#" class="hover:underline me-4 md:me-6">Privacy Policy</a>
+            <Link to="/" class="hover:underline me-4 md:me-6">Privacy Policy</Link>
         </li>
         <li>
-            <a href="#" class="hover:underline me-4 md:me-6">Licensing</a>
+            <Link to="/" class="hover:underline me-4 md:me-6">FAQs</Link>
         </li>
         <li>
-            <a href="mailto:thejoechin@gmail.com" class="hover:underline">Contact</a>
-        </li>
-        <li>
-            <a href="#" class="hover:underline">FAQ</a>
+            <Link to="/" class="hover:underline me-4 md:me-6">Licensing</Link>
         </li>
     </ul>
-    </footer>
+</footer>
   );
 };
