@@ -1,20 +1,25 @@
 import React from "react";
-import ItemsContainer from "./ItemsContainer";
-import SocialIcons from "../SocialIcons/SocialIcons";
-import {Icons} from "./Menus";
+import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-800 p-4 relative">
-      <div className="md:flex md:justify-between md:items-center sm:px-12 px-4 bg-[#ffffff19] py=7">
-        <h1 className="lg:texxt-4x1 text-3x1 text-white md:mb-0 mb-6 lg:leading-normal font-bold md:w-2/5">LunchBreak</h1>
-      </div>
-      <ItemsContainer />
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 text-center pt-2 text-gray-400 text-sm pb-8">
-        <span> Copyright 2024. All Rights Reserved.</span>
-        <span> Terms - Privacy Policy</span>
-        <SocialIcons Icons={Icons} />
-      </div>
-    </footer>
+    <footer class="fixed bottom-0 left-0 z-20 w-full p-4 bg-gray-800 border-t border-gray-200 shadow md:flex md:items-center md:justify-between md:p-6 dark:bg-gray-800 dark:border-gray-600">
+    <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2024 <a href="https://lunchbreak.com" class="hover:underline">LunchBreak™</a>. All Rights Reserved.
+    </span>
+    <ul class="flex flex-wrap items-center mt-3 text-sm font-medium text-gray-500 dark:text-gray-400 sm:mt-0">
+        <li>
+            <Link to="/" class="hover:underline me-4 md:me-6">About</Link>
+        </li>
+        <li>
+            <Link to="/" class="hover:underline me-4 md:me-6">Privacy Policy</Link>
+        </li>
+        <li>
+            <Link to="/" class="hover:underline me-4 md:me-6">FAQs</Link>
+        </li>
+        <li>
+            <Link to="/" class="hover:underline me-4 md:me-6">Licensing</Link>
+        </li>
+    </ul>
+</footer>
   );
 };
