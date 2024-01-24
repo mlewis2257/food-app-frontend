@@ -10,6 +10,7 @@ import AuthPage from "../AuthPage/AuthPage";
 import ScrollToTop from "./ScrollToTop";
 import NotFoundPage from "../NotFoundPage/NotFoundPage";
 import GenericErrorPage from "../GenericErrorPage/GenericErrorPage";
+import RestaurantIndexPage from "../RestaurantIndexPage/RestaurantIndexPage";
 import { UserProvider } from "../../hooks/userContext";
 import FoodsTestPage from "../FoodsTestPage/FoodsTestPage";
 
@@ -26,6 +27,7 @@ function App() {
           <Route path="/foods" element={<FoodsTestPage />} />
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/not-found" element={<NotFoundPage />} />
+          <Route path="restaurants" element={<RestaurantIndexPage />} />
           <Route
             path="/error"
             element={
