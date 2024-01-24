@@ -3,7 +3,10 @@ import React from "react";
 export default function RestaurantIndexCard() {
   return (
     <div>
-      <h1>Restaruant Index Card</h1>
+      <div className="restaurant_card">
+        <h1>Restaurant Name</h1>
+        <h1>Restaurant Logo Image</h1>
+      </div>
     </div>
   );
 }
