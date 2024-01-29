@@ -74,7 +74,7 @@ return (
                 className="w-full h-auto rounded"
           />
         </div>
-        <div className="textdiv max-w-6xl mx-auto px-6">
+        <div className="textdiv max-w-6xl mx-auto px-6 mb-20">
           <h3 className="font-bold text-2xl text-left">
             Transform every lunch break into a moment of delight.
           </h3>
