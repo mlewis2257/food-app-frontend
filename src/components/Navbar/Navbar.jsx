@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { UserContext } from "../../hooks/userContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
@@ -26,6 +26,7 @@ const linkGroups = {
 export default function Navbar() {
   const { user, setUser } = useContext(UserContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isSticky, setIsSticky] = useState(false);
   const navigate = useNavigate();
 
   const userLinks = user ? linkGroups[user.groups] || [] : [];
@@ -43,14 +44,38 @@ export default function Navbar() {
     navigate("/");
   }
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      if (scrollPosition > 50) {
+        setIsSticky(true);
+      } else {
+        setIsSticky(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
-    <nav className="bg-gray-800 p-4 relative">
+    // <nav className="bg-gray-800 p-4 relative">
+    <nav 
+      className={`${
+        isSticky ? "fixed top-0 left-0 right-0 bg-white shadow-lg" : "bg-gray-800"
+      } transition-all duration-300 p-4`}
+    >
       <div className="container mx-auto flex items-center justify-between ">
-        <a href="/" className="text-xl font-bold text-white">
+        {/* <a href="/" className="text-xl font-bold text-white"> */}
+        <a href="/" className={`${isSticky ? "text-gray-800" : "text-white"} text-xl font-bold`}>
           LunchBreak
         </a>
         <button
-          className="text-white md:hidden"
+          // className="text-white md:hidden"
+          className={`${isSticky ? "text-gray-800" : "text-white"} md:hidden`}
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
           <FontAwesomeIcon icon={faBars} />
