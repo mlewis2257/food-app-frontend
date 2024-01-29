@@ -5,11 +5,13 @@ import {
   DatepickerEvent,
 } from "@meinefinsternis/react-horizontal-date-picker";
 import { enUS } from "date-fns/locale";
+import { startOfDay, addDays, subDays } from "date-fns";
 
 export default function DateSelector() {
+  const today = startOfDay(new Date());
   const [date, setDate] = useState({
-    startValue: null,
-    endValue: null,
+    startValue: today,
+    endValue: today,
     rangeDates: [],
   });
 
@@ -17,6 +19,7 @@ export default function DateSelector() {
     const [startValue, endValue, rangeDates] = DatepickerEvent;
     setDate((prev) => ({ ...prev, endValue, startValue, rangeDates }));
   };
+
   return (
     <div>
       <Datepicker
