@@ -10,7 +10,6 @@ export default function RestaurantIndexPage() {
       <br></br>
       <div className="mt-4 text-lg font-bold text-black-700">Restaurants</div>
       <RestaruantIndexCard />
-      <Footer />
     </div>
   );
 }
