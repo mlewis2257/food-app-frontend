@@ -1,7 +1,6 @@
 import React from "react";
 import RestaruantIndexCard from "../../components/RestaurantIndexCard/RestaurantIndexCard";
 import DateSelector from "../../components/DateSelector/DateSelector";
-import Footer from "../../components/Footer/Footer";
 
 export default function RestaurantIndexPage() {
   return (
